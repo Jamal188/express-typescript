@@ -1,0 +1,47 @@
+{
+  "name": "express-typescript",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "building an express project with typescript",
+  "lint-staged": {
+      "*.{js,jsx,ts,tsx}": [
+         "eslint",
+         "prettier --check"
+       ],
+      "*.{json,yml,yaml,md}": [
+         "prettier --check"
+       ]
+  },
+  "scripts": {
+    "compile": "tsc",
+    "dev": "NODE_OPTIONS='--loader ts-node/esm' ts-node src/index.ts",
+    "start": "nodemon --env-file src/.env dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jamal188/express-typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jamal188/express-typescript/issues"
+  },
+  "homepage": "https://github.com/Jamal188/express-typescript#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.1",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.18",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}
