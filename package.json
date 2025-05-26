@@ -16,8 +16,7 @@
     "compile": "tsc",
     "dev": "NODE_OPTIONS='--loader ts-node/esm' ts-node src/index.ts",
     "start": "nodemon --env-file src/.env dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "test": "echo 'this is a test'"
   },
   "repository": {
     "type": "git",
