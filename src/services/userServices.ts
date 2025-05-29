@@ -1,4 +1,4 @@
-import User, { IUser } from '../models/User.ts';
+import User, { IUser, IUserPatch } from '../models/User';
 
 
 
@@ -13,11 +13,12 @@ export const getUserById = async ( id: string ) => {
 
 
 export const getUserByEmail = async (email: string) => {
-  return await User.findOne({ email });
+	return await User.findOne({ email });
 };
 
-
-
+export const patchUser = async (id: string, userData: IUserPatch) => {
+	return await User.findByIdAndUpdate(id, userData);
+};
 
 export const deleteUser = async (id: string) => {
   return await User.findByIdAndDelete(id);
