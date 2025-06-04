@@ -4,13 +4,13 @@
   "type": "module",
   "description": "building an express project with typescript",
   "lint-staged": {
-      "*.{js,jsx,ts,tsx}": [
-         "eslint",
-         "prettier --check"
-       ],
-      "*.{json,yml,yaml,md}": [
-         "prettier --check"
-       ]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint",
+      "prettier --check"
+    ],
+    "*.{json,yml,yaml,md}": [
+      "prettier --check"
+    ]
   },
   "scripts": {
     "compile": "tsc",
@@ -30,9 +30,12 @@
   },
   "homepage": "https://github.com/Jamal188/express-typescript#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
+    "mongoose": "^8.15.1",
     "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "zod": "^3.25.36"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",

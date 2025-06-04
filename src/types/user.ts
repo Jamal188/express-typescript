@@ -11,3 +11,9 @@ export interface User {
   photo?: string;
   aboutMe?: string;
 }
+
+export interface UserJwt {
+  id: any;
+  email: string;
+  role: UserRoles;
+}

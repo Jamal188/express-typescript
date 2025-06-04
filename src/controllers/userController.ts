@@ -16,11 +16,12 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await userService.getUserById(req.params.id);
+    if (!req.userId) { return res.status(404).json({ error: 'No id provided' }); }
+    const user = await userService.getUserById(req.userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+       res.status(404).json({ error: 'User not found' });
     }
-    res.json(user);
+    return res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -29,7 +30,7 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const getUserByEmail = async (req: Request, res: Response) => {
   try {
-    const user = await userService.getUserByEmail(req.query.email as string);
+    const user = await userService.getUserByEmail(req.email as string);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -70,4 +71,6 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-
+export const home = (req: Request, res: Response) => {
+	
+}
