@@ -1,10 +1,10 @@
 import express from 'express';
-import { getUserById } from '../controllers/userController';
-import * as userController from '../controllers/userController';
+import { getUserById } from '../controllers/userController.ts';
+import * as userController from '../controllers/userController.ts';
 import {
   validateUserInput,
   validateUserPatchInput,
-} from "../middlewares/userValidation";
+} from "../middlewares/userValidation.ts";
 
 
 const router = express.Router();

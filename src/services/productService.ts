@@ -1,10 +1,10 @@
-import Product, { IProduct } from '../models/Product';
+import Product, { IProduct } from '../models/Product.ts';
 import mongoose, { Types } from 'mongoose';
 
 export const createProduct = async (
-  productData: Omit<IProduct, keyof mongoose.Document> & { user: mongoose.Schema.Types.ObjectId }
+  productData: Omit<IProduct, keyof mongoose.Document>, userId: mongoose.Schema.Types.ObjectId 
 ): Promise<IProduct> => {
-  return await Product.createProduct(productData);
+  return await Product.createProduct(productData, userId);
 };
 
 export const getProductById = async (

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import User, { IUser } from './User';
+import User, { IUser } from './User.ts';
 
 
 export interface IProduct extends mongoose.Document {
@@ -10,9 +10,13 @@ export interface IProduct extends mongoose.Document {
 	userId: mongoose.Schema.Types.ObjectId;
 }
 
+export interface IProductPatch extends Partial<Omit<IProduct, 'userId'>> {
+  userId: mongoose.Schema.Types.ObjectId; 
+}
+
 export interface IProductModel extends mongoose.Model<IProduct> {
-  createProduct(productData: Omit<IProduct, keyof mongoose.Document> & {
-		user: mongoose.Schema.Types.ObjectId}
+  createProduct(productData: Omit<IProduct, keyof mongoose.Document>,
+		userId: mongoose.Schema.Types.ObjectId
 	       ): Promise<IProduct>;
 }
 

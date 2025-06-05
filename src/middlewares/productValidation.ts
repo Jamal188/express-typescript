@@ -1,6 +1,7 @@
-import { checkSchema, validationResult } from 'express-validator';
+import { checkSchema, validationResult, matchedData } from 'express-validator';
+import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
-
+import { IProduct, IProductPatch } from '../models/Product.ts';
 
 export const validateProduct = checkSchema({
 	name: {
@@ -94,5 +95,29 @@ export const validateProductUpdate = checkSchema({
 });
 
 
+export const handleProductValidation = async ( req: Request, res: Response, next: NextFunction) => {
+
+  const errors = validationResult(req);
+  
+  if (!errors.isEmpty()) {
+     res.status(400).json({ errors: errors.array() });
+
+  }
 
 
+  const productData = req.body;
+
+  if (!req.body.userId) {
+    res.status(403);
+  }
+  req.userId = req.body.userId;
+
+  if (req.method === 'POST') {
+    req.validatedProductData = productData as IProduct;
+
+  } else if (req.method === 'PATCH') {
+    req.validatedProductPatch = productData as IProductPatch;
+  }
+
+  next();
+};

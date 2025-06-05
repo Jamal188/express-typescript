@@ -1,9 +1,17 @@
 import express from "express";
 import helmet from 'helmet';
+import dotenv from 'dotenv';
+import path from 'path';
 
 
-import userRoutes from './routes/user';
-import connectDB from './config/database';
+import userRoutes from './routes/user.ts';
+import authRoutes from './routes/authRoutes.ts';
+import productRoutes from './routes/product.ts';
+import connectDB from './config/database.ts';
+
+dotenv.config({
+  path: path.resolve(process.cwd(), '.env')
+});
 
 const app = express();
 const port = process.env.PORT;
@@ -14,6 +22,9 @@ app.use(helmet());
 
 
 app.use('/users/', userRoutes);
+app.use('/user/', authRoutes);
+app.use('/products/', productRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
   console.log("Response sent");

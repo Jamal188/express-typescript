@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as userService from '../services/userServices';
-import {IUserPatch} from '../models/User';
+import * as userService from '../services/userServices.ts';
+import {IUserPatch} from '../models/User.ts';
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -17,7 +17,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const getUserById = async (req: Request, res: Response) => {
   try {
     if (!req.userId) { return res.status(404).json({ error: 'No id provided' }); }
-    const user = await userService.getUserById(req.userId);
+    const user = await userService.getUserById((req.userId as unknown) as string);
     if (!user) {
        res.status(404).json({ error: 'User not found' });
     }

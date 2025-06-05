@@ -1,12 +1,15 @@
-import { UserRoles } from "../user";
-import { Session } from '../session';
-import { IUser, IUserPatch } from "../../models/User";
+import mongoose from 'mongoose';
+import { UserRoles } from "../user.ts";
+import { Session } from '../session.ts';
+import { IUser, IUserPatch } from "../../models/User.ts";
+import { IProduct, IProductPatch } from "../../models/Product.ts";
+
 export {};
 
 declare global {
   namespace Express {
     interface Request {
-      userId?: string;
+      userId?: mongoose.Schema.Types.ObjectId;
       userRole?: UserRoles;
       userVerified?: string | JwtPayload;
       user?: IUser;
@@ -14,6 +17,8 @@ declare global {
       tokenExp?: number;
       validatedCreateData?: IUser;
       validatedUpdateData?: IUserPatch;
+      validatedProductData?: IProduct;
+      validatedProductPatch?: IProductPatch;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserSchemaZod, UserPatchSchemaZod } from '../models/User';
+import { UserSchemaZod, UserPatchSchemaZod } from '../models/User.ts';
 
 export const validateUserInput = (
     req: Request, 

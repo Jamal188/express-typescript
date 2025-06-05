@@ -1,4 +1,4 @@
-import User, { IUser, IUserPatch } from '../models/User';
+import User, { IUser, IUserPatch } from '../models/User.ts';
 
 
 
