@@ -9,7 +9,7 @@ export {};
 declare global {
   namespace Express {
     interface Request {
-      userId?: mongoose.Schema.Types.ObjectId;
+      userId?: mongoose.Schema.Types.ObjectId; 
       userRole?: UserRoles;
       userVerified?: string | JwtPayload;
       user?: IUser;
@@ -17,8 +17,9 @@ declare global {
       tokenExp?: number;
       validatedCreateData?: IUser;
       validatedUpdateData?: IUserPatch;
-      validatedProductData?: IProduct;
+      validatedProductData?: IProductPatch;
       validatedProductPatch?: IProductPatch;
+      productId: string;
     }
   }
 }

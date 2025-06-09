@@ -3,7 +3,7 @@ import mongoose, { ConnectOptions } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
 	try {
-		const conn = await mongoose.connect("mongodb://192.168.1.102:27017/express-typescript");
+		const conn = await mongoose.connect("mongodb://192.168.1.103:27017/express-typescript");
 		console.log(`MongoDB connected: ${conn.connection.host}`);
 	} catch (error: unknown) {
 		if (error instanceof Error) {

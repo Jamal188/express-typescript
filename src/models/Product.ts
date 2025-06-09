@@ -7,6 +7,7 @@ export interface IProduct extends mongoose.Document {
 	brand: string;
 	description?: string;
 	price: number;
+	quantity: number;
 	userId: mongoose.Schema.Types.ObjectId;
 }
 
@@ -15,7 +16,7 @@ export interface IProductPatch extends Partial<Omit<IProduct, 'userId'>> {
 }
 
 export interface IProductModel extends mongoose.Model<IProduct> {
-  createProduct(productData: Omit<IProduct, keyof mongoose.Document>,
+  createProduct(productData: Omit<IProductPatch, keyof mongoose.Document>,
 		userId: mongoose.Schema.Types.ObjectId
 	       ): Promise<IProduct>;
 }
@@ -41,6 +42,10 @@ const ProductSchema = new mongoose.Schema<IProduct>(
       type: Number, 
       required: [true, 'Price is required'],
       min: [0.01, 'Price must be positive']
+    },
+    quantity: {
+      type: Number,
+      required: [true, 'Quantity of the product is required']
     },
     userId: {
 	    type: mongoose.Schema.Types.ObjectId,
@@ -70,8 +75,8 @@ ProductSchema.pre<IProduct>('save', async function(next) {
   next();
 });
 
-ProductSchema.statics.createProduct = async function(productData: Omit<IProduct, keyof mongoose.Document> & {
-  user: mongoose.Schema.Types.ObjectId }) 
+ProductSchema.statics.createProduct = async function(productData: Omit<IProduct, keyof mongoose.Document | 'userId'> & {
+  userId: mongoose.Schema.Types.ObjectId }) 
   {
   	const product = new this(productData);
   	return await product.save();

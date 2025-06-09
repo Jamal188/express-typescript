@@ -29,6 +29,9 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     }
     const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
     req.userVerified = decoded; 
+
+    req.body.userId = req.userVerified.id;
+
     next();
   } catch (err) {
         if (err instanceof Error) {

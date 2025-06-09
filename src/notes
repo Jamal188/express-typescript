@@ -1,7 +1,16 @@
-check the authentication flow / security
-the token 
-work on the logout function
+authentication: 
+	logout function	blacklist?
+	refresh token
 
-start with the next model when finished 
+admin:
+	updating the delete, update (user or product) to let the admin do what he wants
 
+
+product:
+	search engine and indexing for fast querying
+
+
+security: 
+	xss
+	cors
 

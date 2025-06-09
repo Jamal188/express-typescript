@@ -2,7 +2,7 @@ import { checkSchema, validationResult, matchedData } from 'express-validator';
 import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { IProduct, IProductPatch } from '../models/Product.ts';
-
+import * as productService from '../services/productService.ts';
 export const validateProduct = checkSchema({
 	name: {
 		isString: true,
@@ -46,6 +46,12 @@ export const validateProduct = checkSchema({
 		toFloat: true,
 
 	},
+	quantity: {
+		isInt : {
+			options: {min: 0},
+			errorMessage: 'Product quantity cannot be negative!'
+		}
+	}
 });
 
 
@@ -92,6 +98,12 @@ export const validateProductUpdate = checkSchema({
 		toFloat: true,
 
 	},
+	quantity: {
+		isInt : {
+			options: {min: 0},
+			errorMessage: 'Product quantity cannot be negative!'
+		}
+	}
 });
 
 
@@ -100,24 +112,32 @@ export const handleProductValidation = async ( req: Request, res: Response, next
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-     res.status(400).json({ errors: errors.array() });
+  
+    res.status(400).json({ errors: errors.array() });
 
   }
-
 
   const productData = req.body;
-
-  if (!req.body.userId) {
-    res.status(403);
-  }
-  req.userId = req.body.userId;
-
+  req.userId = req.userVerified.id;
   if (req.method === 'POST') {
-    req.validatedProductData = productData as IProduct;
+    req.validatedProductData = productData as IProductPatch;
 
   } else if (req.method === 'PATCH') {
     req.validatedProductPatch = productData as IProductPatch;
   }
 
   next();
+};
+
+
+export const verifyProduct = async (req: Request, res: Response, next: NextFunction) => {
+	if (!req.body.userId) throw new Error("Login required");
+
+	if(!req.body.productId) throw new Error("Product id required");
+
+	const result = await productService.verifyProduct(req.body.productId, req.body.userId);
+    console.log(result);
+    if(!result) throw new Error("Permission denied");
+
+	next();
 };
