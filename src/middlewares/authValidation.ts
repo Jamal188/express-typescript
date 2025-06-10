@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 
 export const LoginSchema = z.object({
@@ -28,8 +28,9 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
        res.status(401).json({ error: 'Access denied' });
     }
     const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
-    req.userVerified = decoded; 
+    if(!decoded) throw new Error("invalid token");
 
+    req.userVerified = decoded as JwtPayload; 
     req.body.userId = req.userVerified.id;
 
     next();

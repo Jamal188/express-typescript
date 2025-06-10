@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { IProduct, IProductPatch } from '../models/Product.ts';
 import * as productService from '../services/productService.ts';
+
+
+
 export const validateProduct = checkSchema({
 	name: {
 		isString: true,
@@ -116,9 +119,9 @@ export const handleProductValidation = async ( req: Request, res: Response, next
     res.status(400).json({ errors: errors.array() });
 
   }
-
+  
   const productData = req.body;
-  req.userId = req.userVerified.id;
+
   if (req.method === 'POST') {
     req.validatedProductData = productData as IProductPatch;
 
@@ -136,7 +139,7 @@ export const verifyProduct = async (req: Request, res: Response, next: NextFunct
 	if(!req.body.productId) throw new Error("Product id required");
 
 	const result = await productService.verifyProduct(req.body.productId, req.body.userId);
-    console.log(result);
+
     if(!result) throw new Error("Permission denied");
 
 	next();

@@ -1,5 +1,7 @@
+import { string } from 'zod/v4';
 import Product, { IProduct, IProductPatch } from '../models/Product.ts';
 import mongoose, { Types } from 'mongoose';
+import { query } from 'express-validator';
 
 export const createProduct = async (
   productData: Omit<IProductPatch, keyof mongoose.Document>, 
@@ -26,8 +28,11 @@ export const getProductById = async (
   productId: string,
   userId?: Types.ObjectId
 ): Promise<IProduct | null> => {
-  const query: any = { _id: productId };
-  if (userId) query.user = userId; 
+  if (userId) { 
+  const query = { _id: productId, user: userId };
+  } else {
+    const query = {_id : productId};
+  }
   return await Product.findOne(query).populate('user', 'name email');
 };
 
@@ -45,7 +50,7 @@ export const productInStock = async (productId: string): Promise<boolean> => {
       throw new Error('Product not found');
     }
     if (product.quantity > 0) {
-	return true;
+	      return true;
     }
     return false;
 };

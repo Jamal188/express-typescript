@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
-import { UserRoles } from "../user.ts";
-import { Session } from '../session.ts';
+import { UserRoles, UserJwt } from "../user.ts";
+
 import { IUser, IUserPatch } from "../../models/User.ts";
 import { IProduct, IProductPatch } from "../../models/Product.ts";
+import { JwtPayload } from 'jsonwebtoken';
 
 export {};
 
