@@ -4,6 +4,7 @@ import { IProduct, IProductPatch } from '../models/Product.ts';
 import { th } from 'zod/v4/locales';
 import { hasUncaughtExceptionCaptureCallback } from 'process';
 import { error } from 'console';
+import { Error } from 'mongoose';
 
 
 
@@ -11,17 +12,17 @@ export const createProduct = async (req: Request, res: Response) => {
     try {
 	if (!req.validatedProductData) throw new Error("Create data is required");
 
-	if(!req.userVerified || !req.body.userId) throw new Error("Login required");
+	if(!req.userVerified || !req.userId) throw new Error("Login required");
 
-	const product = await productService.createProduct(req.validatedProductData, req.body.userId);
+	const product = await productService.createProduct(req.validatedProductData, req.userId);
 	res.status(201).json(product);
     
     } catch (error) {
 	    if (error instanceof Error) {
-		res.status(400).json({error: error.message});
-            }
+			res.status(400).json({error: error.message});
+        }
 	    else {
-		res.status(500).json({error: "internal error"});
+			res.status(500).json({error: "internal error"});
 	    }
    }
 };
@@ -33,10 +34,10 @@ export const updateProduct = async (req: Request, res: Response) => {
 		if(!req.validatedProductPatch) throw new Error("Update data is required");
 
 
-		if(!req.body.userId) throw new Error("Login required");
+		if(!req.userId) throw new Error("Login required");
 
 		const updated = await productService.updateProduct(req.validatedProductPatch, 
-			req.body.userId);
+			req.userId);
 		res.status(201).json("updated successfully");
 	} catch (error) {
 		if (error instanceof Error) {
@@ -53,19 +54,38 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const getProductById = async(req: Request, res: Response) => {
 	try {
-		console.log("hello 1")
 		if(!req.body.productId) throw new Error("Product id is required");
 		let product = await productService.getProductById(req.body.productId);
 
-		console.log("hello 2")
         if (!product) throw new Error("Product not founnd")
 		res.status(201).json(product);
 
 	} catch (error) {
-
+		if (error instanceof Error) {
+	    	res.status(400).json({error: error.message});
+		}
+		else {
+	    	res.status(500).json({error: "internal error"});
+		}
 	}
 }
 
+
+export const deleteProduct = async (req: Request, res: Response) => {
+	try {
+		let deleted = await productService.deleteProduct(req.params.id);
+        if (deleted) {
+			res.status(201).json({"Product": "deleted successfully"});
+		}
+	} catch (error) {
+		if (error instanceof Error) {
+	    	res.status(400).json({error: error.message});
+		}
+		else {
+	    	res.status(500).json({error: "internal error"});
+		}
+	}
+};
 
 export const inStock = async (req: Request, res: Response) => {
     try {

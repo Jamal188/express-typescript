@@ -8,12 +8,11 @@ export interface IProduct extends mongoose.Document {
 	description?: string;
 	price: number;
 	quantity: number;
+  photo_path?: string;
 	userId: mongoose.Schema.Types.ObjectId;
 }
 
-export interface IProductPatch extends Partial<Omit<IProduct, 'userId'>> {
-  userId: mongoose.Schema.Types.ObjectId; 
-}
+export interface IProductPatch extends Partial<Omit<IProduct, 'userId'>> {}
 
 export interface IProductModel extends mongoose.Model<IProduct> {
   createProduct(productData: Omit<IProductPatch, keyof mongoose.Document>,
@@ -46,6 +45,10 @@ const ProductSchema = new mongoose.Schema<IProduct>(
     quantity: {
       type: Number,
       required: [true, 'Quantity of the product is required']
+    },
+    photo_path: {
+      type: String,
+      required: false
     },
     userId: {
 	    type: mongoose.Schema.Types.ObjectId,
@@ -84,6 +87,6 @@ ProductSchema.statics.createProduct = async function(productData: Omit<IProduct,
 
 
 const Product = mongoose.model<IProduct, IProductModel>('Product', ProductSchema);
-export type UseProduct = Pick<IProduct, '_id' | 'name' | 'brand' | 'price' | 'description'>;
+export type UseProduct = Pick<IProduct, '_id' | 'name' | 'brand' | 'price' | 'description' | 'photo_path'>;
 export default Product;
 

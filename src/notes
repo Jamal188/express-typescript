@@ -14,3 +14,12 @@ security:
 	xss
 	cors
 
+to do today : 
+	- integrate upload picture
+	- creating path to delete user for the admin only
+	- let the admin CRUD any product
+
+long run : 
+	- integrate search engine
+	- public page to present the products 
+	- implement cart , and delivery

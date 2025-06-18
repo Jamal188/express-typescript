@@ -3,7 +3,6 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import path from 'path';
 
-
 import userRoutes from './routes/user.ts';
 import authRoutes from './routes/authRoutes.ts';
 import productRoutes from './routes/product.ts';
@@ -22,7 +21,7 @@ app.use(helmet());
 
 
 app.use('/users/', userRoutes);
-app.use('/user/', authRoutes);
+app.use('/auth/', authRoutes);
 app.use('/products/', productRoutes);
 
 app.get("/", (req, res) => {

@@ -115,12 +115,12 @@ export const handleProductValidation = async ( req: Request, res: Response, next
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-  
     res.status(400).json({ errors: errors.array() });
-
+	return;
   }
   
   const productData = req.body;
+  productData.userId = req.userId;
 
   if (req.method === 'POST') {
     req.validatedProductData = productData as IProductPatch;
@@ -134,11 +134,12 @@ export const handleProductValidation = async ( req: Request, res: Response, next
 
 
 export const verifyProduct = async (req: Request, res: Response, next: NextFunction) => {
-	if (!req.body.userId) throw new Error("Login required");
+	if (!req.userId) throw new Error("Login required");
 
-	if(!req.body.productId) throw new Error("Product id required");
+	if(!req.params.id) throw new Error("Product id required");
 
-	const result = await productService.verifyProduct(req.body.productId, req.body.userId);
+
+	const result = await productService.verifyProduct(req.params.id, req.userId);
 
     if(!result) throw new Error("Permission denied");
 

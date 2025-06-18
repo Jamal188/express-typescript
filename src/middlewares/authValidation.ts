@@ -31,12 +31,13 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     if(!decoded) throw new Error("invalid token");
 
     req.userVerified = decoded as JwtPayload; 
-    req.body.userId = req.userVerified.id;
+    req.userId = req.userVerified.id;
+    req.userRole = req.userVerified.role;
 
     next();
-  } catch (err) {
-        if (err instanceof Error) {
-              res.status(401).json({ error: 'Invalid token' });
+  } catch (error) {
+        if (error instanceof Error) {
+              res.status(401).json({ error: error.message });
 	}
   }
 };
