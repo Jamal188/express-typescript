@@ -1,6 +1,6 @@
 import Product, { IProduct, IProductPatch } from '../models/Product.ts';
 import mongoose, { Types } from 'mongoose';
-
+import { PaginatedResponse } from '../types/product.ts';
 
 export const createProduct = async (
   productData: Omit<IProductPatch, keyof mongoose.Document>, 
@@ -8,9 +8,8 @@ export const createProduct = async (
 ): Promise<IProduct> => {
   return await Product.createProduct(productData, userId);
 };
-export const updateProduct = async (productdata: IProductPatch, 
-  userId: mongoose.Schema.Types.ObjectId) => {
 
+export const updateProduct = async (productdata: IProductPatch) => {
     return await Product.updateOne(productdata.id, productdata);
 };
 
@@ -54,5 +53,29 @@ export const productInStock = async (productId: string): Promise<boolean> => {
     return false;
 };
 
+export const getProducts = async (page: number = 1):Promise<PaginatedResponse> => {
+    const limit = 5;
+    if (page < 1) throw new Error("Page must be >= 1");
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / limit);
+    const nextPage = page < totalPages ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null;
+    return {
+      data: products,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalProducts,
+        nextPage,
+        prevPage,
+      },
+    };
+}
 
 

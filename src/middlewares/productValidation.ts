@@ -49,6 +49,10 @@ export const validateProduct = checkSchema({
 		toFloat: true,
 
 	},
+	photo_path : {
+	    isString: true,
+		optional: true
+	},
 	quantity: {
 		isInt : {
 			options: {min: 0},
@@ -101,6 +105,10 @@ export const validateProductUpdate = checkSchema({
 		toFloat: true,
 
 	},
+	photo_path : {
+		isString: true,
+		optional: true
+	},
 	quantity: {
 		isInt : {
 			options: {min: 0},
@@ -119,8 +127,9 @@ export const handleProductValidation = async ( req: Request, res: Response, next
 	return;
   }
   
+  
   const productData = req.body;
-  productData.userId = req.userId;
+  productData.id = req.userId;
 
   if (req.method === 'POST') {
     req.validatedProductData = productData as IProductPatch;
@@ -135,12 +144,10 @@ export const handleProductValidation = async ( req: Request, res: Response, next
 
 export const verifyProduct = async (req: Request, res: Response, next: NextFunction) => {
 	if (!req.userId) throw new Error("Login required");
-
 	if(!req.params.id) throw new Error("Product id required");
-
+	if(req.userRole == "admin") next();
 
 	const result = await productService.verifyProduct(req.params.id, req.userId);
-
     if(!result) throw new Error("Permission denied");
 
 	next();

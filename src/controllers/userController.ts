@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/userServices.ts';
 import {IUserPatch} from '../models/User.ts';
+import { ObjectId } from 'mongoose';
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -61,16 +62,18 @@ export const patchUser = async (req: Request, res: Response):Promise<void> => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
+    if(!req.params.id) throw new Error("User id must be provided");
     const deletedUser = await userService.deleteUser(req.params.id);
     if (!deletedUser) {
-      return res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'User not found' });
     }
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+      res.status(500).json({ error: 'Server error' });
   }
 };
 
 export const home = (req: Request, res: Response) => {
 	
 }
+

@@ -36,8 +36,9 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 		if(!req.userId) throw new Error("Login required");
 
-		const updated = await productService.updateProduct(req.validatedProductPatch, 
-			req.userId);
+		const updated = await productService.updateProduct(req.validatedProductPatch);
+		if (!updated) throw new Error("Internal error");
+		
 		res.status(201).json("updated successfully");
 	} catch (error) {
 		if (error instanceof Error) {
@@ -101,3 +102,23 @@ export const inStock = async (req: Request, res: Response) => {
 	}
     }    
 };
+
+
+export const getProducts = async (req: Request, res: Response) => {
+	try {
+		const page = parseInt(req.query.page as string) || 1;
+		const result = await productService.getProducts(page);
+		res.status(200).json({
+        	success: true,
+        	data: result.data,
+        	pagination: result.pagination,
+        });
+	} catch (error) {
+		res.status(500).json({
+        	success: false,
+        	message: "Failed to fetch products",
+        	"error": error
+      });
+
+	}
+}
